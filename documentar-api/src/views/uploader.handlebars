@@ -1,0 +1,37 @@
+<div>
+    {{#if user}}
+
+    <h1>User Uploader</h1>
+
+    <form id="uploader_form" method="post" enctype="multipart/form-data" data-uid={{user._id}}>
+        <label for="file">Choose a file:</label>
+        <input type="file" name="file" id="file" required>
+
+        <label for="folder">Select folder:</label>
+        <select name="folder" id="folder" required>
+            <option value="" disabled selected>Select document type</option>
+            <option value="profile">Profile</option>
+            <option value="product">Product</option>
+            <option value="document">Document</option>
+        </select>
+
+  <div id="subfolderContainer" style="display: none;">
+            <label for="subfolder">Select document type:</label>
+            <select name="subfolder" id="subfolder">
+                <option value="" disabled selected>Select</option>
+                <option value="identification">Identification</option>
+                <option value="proof_of_residence">Proof of residence</option>
+                <option value="bank_statement">Bank statement</option>
+            </select>
+        </div>
+
+        <button type="submit">Upload</button>
+    </form>
+
+    {{else}}
+    <p>You must logged to view this.</p>
+    <a href="/login">Login</a>
+    {{/if}}
+</div>
+
+<script src="/js/uploader.js"></script>

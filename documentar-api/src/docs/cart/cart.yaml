@@ -1,0 +1,224 @@
+paths:
+  /api/carts/:
+    get:
+      summary: "Get a list of carts"
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: "Carts successfully obtained from the database."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
+        "500":
+          description: "Internal server error, usually database connection failure or faulty query."
+    post:
+      summary: "Create carts"
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: "Cart created successfully."
+        "400":
+          description: "Fields incompleted or not valid"
+        "500":
+          description: "Internal server error, usually database connection failure or faulty query."
+  /api/carts/{cid}:
+    get:
+      summary: "Get cart"
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart id to search
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: "Cart successfully obtained from the database."
+        "404":
+          description: "Cart don't found."
+        "500":
+          description: "Internal server error, usually database connection failure or faulty"
+    put:
+      summary: "Update cart"
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart id to update
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: "Cart updated successfully."
+        "404":
+          description: "Cart don't found."
+        "500":
+          description: "Internal server error, usually database connection failure or faulty"
+    post:
+      summary: "Purchase cart"
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart id to purchase
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: "Cart purchased successfully."
+        "404":
+          description: "Cart don't found."
+        "500":
+          description: "Internal server error, usually database connection failure or faulty"
+    delete:
+      summary: "Delete cart"
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart id to delete
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: "Cart deleted successfully."
+        "404":
+          description: "Cart don't found."
+        "500":
+          description: "Internal server error, usually database connection failure or faulty"
+  /api/carts/{cid}/products/{pid}:
+    put:
+      summary: "Update quantity products in cart"
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart id to update
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: product id to update
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: "Product quantity in cart updated successfully."
+        "404":
+          description: "Cart don't found."
+        "500":
+          description: "Internal server error, usually database connection failure or faulty"
+    post:
+      summary: "Add products in user cart"
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart user id
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: product id to add
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: "Product added on cart successfully."
+        "404":
+          description: "Cart don't found."
+        "500":
+          description: "Internal server error, usually database connection failure or faulty"
+    delete:
+      summary: "Delete products in user cart"
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart user id
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: product id to delete
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: "Product deleted on cart successfully."
+        "404":
+          description: "Cart don't found."
+        "500":
+          description: "Internal server error, usually database connection failure or faulty"
+  /api/carts/empty/{cid}:
+    put:
+      summary: "Empty products on cart"
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart id to empty
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: "Products removed from cart successfully."
+        "404":
+          description: "Cart don't found."
+        "500":
+          description: "Internal server error, usually database connection failure or faulty"
+
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id generated by MongoDB
+        products:
+          type: array
+          description: List of products in the cart
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                description: Id of the product in the cart
+              quantity:
+                type: number
+                default: 1
+                description: Quantity of the product in the cart (default is 1)
+      required:
+        - products
+      example:
+        _id: ObjectId(789012XYZ)
+        products:
+          - product: ObjectId(123456ABC)
+            quantity: 2
+          - product: ObjectId(789DEF456)
+            quantity: 1
